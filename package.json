@@ -1,0 +1,48 @@
+{
+  "name": "sql-scrudder",
+  "version": "0.0.0",
+  "description": "SQL SCRUD helpers for Node.js",
+  "author": {
+    "name": "Rafee Memon",
+    "email": "rafeememon@gmail.com",
+    "url": "https://github.com/rafeememon/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/rafeememon/node-sql-scrudder.git"
+  },
+  "license": "MIT",
+  "homepage": "http://github.com/rafeememon/node-sql-scrudder",
+  "keywords": [
+    "sql",
+    "query",
+    "statement",
+    "parameter",
+    "crud",
+    "scrud",
+    "search",
+    "create",
+    "read",
+    "update",
+    "delete"
+  ],
+  "files": [
+    "*.md",
+    "lib"
+  ],
+  "main": "./lib",
+  "scripts": {
+    "build": "babel src --out-dir lib --source-maps inline",
+    "prepublish": "npm run build",
+    "test": "standard && mocha"
+  },
+  "dependencies": {
+    "sql-composer": "^0.1.1"
+  },
+  "devDependencies": {
+    "babel": "^5.8.34",
+    "chai": "^3.4.1",
+    "mocha": "^2.3.4",
+    "standard": "^5.4.1"
+  }
+}
