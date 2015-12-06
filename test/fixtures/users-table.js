@@ -9,7 +9,9 @@ import {
   USER_ACTIVE_COLUMN
 } from './users-columns'
 
-export default table('Users', {
+export const TABLE_NAME = 'Users'
+
+export default table(TABLE_NAME, {
   [USER_ID_KEY]: column(USER_ID_COLUMN, {id: true}),
   [USER_NAME_KEY]: column(USER_NAME_COLUMN),
   [USER_ACTIVE_KEY]: column(USER_ACTIVE_COLUMN)
