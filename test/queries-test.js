@@ -301,6 +301,14 @@ describe('getInsertClause', () => {
       values: {}
     })).to.throw('no values')
   })
+  it('should throw an error for an invalid column', () => {
+    expect(() => getInsertClause({
+      table: USERS_TABLE,
+      values: {
+        [INVALID_KEY]: 'value'
+      }
+    })).to.throw('invalid column')
+  })
   it('should return a clause for one column', () => {
     const userId = 1
     expect(getInsertClause({
