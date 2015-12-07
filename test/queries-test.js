@@ -5,7 +5,8 @@ import {
   getIdWhereClause,
   getGroupClause,
   getOrderClause,
-  getInsertClause
+  getInsertClause,
+  getUpdateClause
 } from '../src/queries'
 import { EMPTY_SQL } from '../src/util'
 import { expect } from 'chai'
@@ -333,6 +334,60 @@ describe('getInsertClause', () => {
     })).to.deep.equal({
       text: `(${USER_ID_COLUMN}, ${USER_NAME_COLUMN}) VALUES (?, ?)`,
       values: [userId, userName]
+    })
+  })
+})
+
+describe('getUpdateClause', () => {
+  it('should throw an error if no values specified', () => {
+    expect(() => getUpdateClause({
+      table: USERS_TABLE,
+      values: {}
+    })).to.throw('no updates')
+  })
+  it('should throw an error if only id values specified', () => {
+    expect(() => getUpdateClause({
+      table: USERS_TABLE,
+      values: {
+        [USER_ID_KEY]: 1
+      }
+    })).to.throw('no updates')
+  })
+  it('should throw an error for an invalid column', () => {
+    expect(() => getUpdateClause({
+      table: USERS_TABLE,
+      values: {
+        [USER_ID_KEY]: 1,
+        [INVALID_KEY]: 'value'
+      }
+    })).to.throw('invalid column')
+  })
+  it('should update a single column', () => {
+    const userName = 'admin'
+    expect(getUpdateClause({
+      table: USERS_TABLE,
+      values: {
+        [USER_ID_KEY]: 1,
+        [USER_NAME_KEY]: userName
+      }
+    })).to.deep.equal({
+      text: `${USER_NAME_COLUMN} = ?`,
+      values: [userName]
+    })
+  })
+  it('should update multiple column', () => {
+    const userName = 'admin'
+    const active = 'Y'
+    expect(getUpdateClause({
+      table: USERS_TABLE,
+      values: {
+        [USER_ID_KEY]: 1,
+        [USER_NAME_KEY]: userName,
+        [USER_ACTIVE_KEY]: active
+      }
+    })).to.deep.equal({
+      text: `${USER_NAME_COLUMN} = ?, ${USER_ACTIVE_COLUMN} = ?`,
+      values: [userName, active]
     })
   })
 })

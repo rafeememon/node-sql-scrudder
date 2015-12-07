@@ -89,3 +89,13 @@ export function getInsertClause ({table, values}) {
   const valueList = keys.map(key => sql`${values[key]}`)
   return sql`(${joinsql(columnList, ', ')}) VALUES (${joinsql(valueList, ', ')})`
 }
+
+export function getUpdateClause ({table, values}) {
+  const updates = Object.keys(values)
+    .filter(key => !table.getColumn(key).id)
+    .map(key => sql`${rawsql(table.getColumn(key).expr)} = ${values[key]}`)
+  if (!updates.length) {
+    throw new Error('no updates')
+  }
+  return joinsql(updates, ', ')
+}

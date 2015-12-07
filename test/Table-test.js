@@ -32,9 +32,24 @@ describe('Table', () => {
       expect(table.getColumn(USER_ID_KEY).expr).to.equal(USER_ID_COLUMN)
     })
   })
+  describe('#search', () => {
+    it('should return a searcher', () => {
+      expect(table.search()).to.be.a('function')
+    })
+  })
   describe('#read', () => {
     it('should return a reader', () => {
       expect(table.read()).to.be.a('function')
+    })
+  })
+  describe('#create', () => {
+    it('should return a creator', () => {
+      expect(table.create()).to.be.a('function')
+    })
+  })
+  describe('#delete', () => {
+    it('should return a deleter', () => {
+      expect(table.delete()).to.be.a('function')
     })
   })
 })

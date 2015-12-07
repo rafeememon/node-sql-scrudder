@@ -2,6 +2,7 @@ import Searcher from './Searcher'
 import Reader from './Reader'
 import Creator from './Creator'
 import Deleter from './Deleter'
+import Updater from './Updater'
 import { getOption } from './util'
 
 export default class Table {
@@ -46,6 +47,11 @@ export default class Table {
   delete () {
     const deleter = new Deleter({table: this})
     return deleter.delete.bind(deleter)
+  }
+
+  update () {
+    const updater = new Updater({table: this})
+    return updater.update.bind(updater)
   }
 
 }
