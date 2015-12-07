@@ -79,3 +79,13 @@ export function getOrderClause ({table, sort}) {
     return EMPTY_SQL
   }
 }
+
+export function getInsertClause ({table, values}) {
+  const keys = Object.keys(values)
+  if (!keys.length) {
+    throw new Error('no values')
+  }
+  const columnList = keys.map(key => rawsql(table.getColumn(key).expr))
+  const valueList = keys.map(key => sql`${values[key]}`)
+  return sql`(${joinsql(columnList, ', ')}) VALUES (${joinsql(valueList, ', ')})`
+}

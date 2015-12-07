@@ -1,5 +1,6 @@
 import Searcher from './Searcher'
 import Reader from './Reader'
+import Creator from './Creator'
 import { getOption } from './util'
 
 export default class Table {
@@ -34,6 +35,11 @@ export default class Table {
       columns: columns || Object.keys(this.columns)
     })
     return reader.read.bind(reader)
+  }
+
+  create () {
+    const creator = new Creator({table: this})
+    return creator.create.bind(creator)
   }
 
 }

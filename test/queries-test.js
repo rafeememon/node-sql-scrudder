@@ -4,7 +4,8 @@ import {
   getWhereClause,
   getIdWhereClause,
   getGroupClause,
-  getOrderClause
+  getOrderClause,
+  getInsertClause
 } from '../src/queries'
 import { EMPTY_SQL } from '../src/util'
 import { expect } from 'chai'
@@ -289,6 +290,41 @@ describe('getOrderClause', () => {
     })).to.deep.equal({
       text: `ORDER BY ${USER_ID_COLUMN} DESC`,
       values: []
+    })
+  })
+})
+
+describe('getInsertClause', () => {
+  it('should throw an error if no values specified', () => {
+    expect(() => getInsertClause({
+      table: USERS_TABLE,
+      values: {}
+    })).to.throw('no values')
+  })
+  it('should return a clause for one column', () => {
+    const userId = 1
+    expect(getInsertClause({
+      table: USERS_TABLE,
+      values: {
+        [USER_ID_KEY]: userId
+      }
+    })).to.deep.equal({
+      text: `(${USER_ID_COLUMN}) VALUES (?)`,
+      values: [userId]
+    })
+  })
+  it('should return a clause for multiple columns', () => {
+    const userId = 1
+    const userName = 'admin'
+    expect(getInsertClause({
+      table: USERS_TABLE,
+      values: {
+        [USER_ID_KEY]: userId,
+        [USER_NAME_KEY]: userName
+      }
+    })).to.deep.equal({
+      text: `(${USER_ID_COLUMN}, ${USER_NAME_COLUMN}) VALUES (?, ?)`,
+      values: [userId, userName]
     })
   })
 })
