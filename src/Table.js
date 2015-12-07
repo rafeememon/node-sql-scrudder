@@ -1,6 +1,7 @@
 import Searcher from './Searcher'
 import Reader from './Reader'
 import Creator from './Creator'
+import Deleter from './Deleter'
 import { getOption } from './util'
 
 export default class Table {
@@ -40,6 +41,11 @@ export default class Table {
   create () {
     const creator = new Creator({table: this})
     return creator.create.bind(creator)
+  }
+
+  delete () {
+    const deleter = new Deleter({table: this})
+    return deleter.delete.bind(deleter)
   }
 
 }
