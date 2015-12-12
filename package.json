@@ -1,7 +1,7 @@
 {
   "name": "sql-scrudder",
-  "version": "0.0.0",
-  "description": "SQL SCRUD helpers for Node.js",
+  "version": "0.1.0",
+  "description": "SQL SCRUD query generators for Node.js",
   "author": {
     "name": "Rafee Memon",
     "email": "rafeememon@gmail.com",
