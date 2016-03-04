@@ -5,6 +5,7 @@ import {
   getIdWhereClause,
   getGroupClause,
   getOrderClause,
+  getLimitClause,
   getInsertClause,
   getUpdateClause
 } from '../src/queries'
@@ -290,6 +291,58 @@ describe('getOrderClause', () => {
       }
     })).to.deep.equal({
       text: `ORDER BY ${USER_ID_COLUMN} DESC`,
+      values: []
+    })
+  })
+})
+
+describe('getLimitClause', () => {
+  const rows = 5
+  const offset = 10
+  it('should return an empty query for no limit', () => {
+    expect(getLimitClause({})).to.deep.equal(EMPTY_SQL)
+  })
+  it('should throw an error for non-integer rows', () => {
+    expect(() => getLimitClause({
+      limit: 'string'
+    })).to.throw('invalid limit rows')
+  })
+  it('should throw an error for negative rows', () => {
+    expect(() => getLimitClause({
+      limit: -rows
+    })).to.throw('invalid limit rows')
+  })
+  it('should return a clause for rows as a number', () => {
+    expect(getLimitClause({
+      limit: rows
+    })).to.deep.equal({
+      text: `LIMIT ${rows}`,
+      values: []
+    })
+  })
+  it('should return a clause for rows as an object', () => {
+    expect(getLimitClause({
+      limit: {rows}
+    })).to.deep.equal({
+      text: `LIMIT ${rows}`,
+      values: []
+    })
+  })
+  it('should throw an error for non-integer offset', () => {
+    expect(() => getLimitClause({
+      limit: {rows, offset: 'invalid'}
+    })).to.throw('invalid limit offset')
+  })
+  it('should throw an error for negative offset', () => {
+    expect(() => getLimitClause({
+      limit: {rows, offset: -offset}
+    })).to.throw('invalid limit offset')
+  })
+  it('should return a clause for rows and offset', () => {
+    expect(getLimitClause({
+      limit: {rows, offset}
+    })).to.deep.equal({
+      text: `LIMIT ${offset},${rows}`,
       values: []
     })
   })
