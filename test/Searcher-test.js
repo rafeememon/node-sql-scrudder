@@ -117,5 +117,29 @@ describe('Searcher', () => {
         })
       })
     })
+
+    describe('limit parameter', () => {
+      const rows = 5
+      const offset = 10
+      const searcher = new Searcher({
+        table: USERS_TABLE,
+        columns: [USER_ID_KEY],
+        aggregate: {},
+        sort: null
+      })
+      const BASE_SELECT = `SELECT ${USER_ID_COLUMN} AS ${USER_ID_KEY} FROM ${TABLE_NAME}`
+      it('should include a limit', () => {
+        expectQuery(searcher.search({}, {limit: rows}), {
+          text: `${BASE_SELECT} LIMIT ${rows}`,
+          values: []
+        })
+      })
+      it('should include a limit and offset', () => {
+        expectQuery(searcher.search({}, {limit: {rows, offset}}), {
+          text: `${BASE_SELECT} LIMIT ${offset},${rows}`,
+          values: []
+        })
+      })
+    })
   })
 })

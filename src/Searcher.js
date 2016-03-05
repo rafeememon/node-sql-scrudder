@@ -4,7 +4,8 @@ import {
   getSelectClause,
   getWhereClause,
   getGroupClause,
-  getOrderClause
+  getOrderClause,
+  getLimitClause
 } from './queries'
 
 export default class Searcher {
@@ -16,14 +17,15 @@ export default class Searcher {
     this.sort = getOption(options, 'sort')
   }
 
-  search (queries = {}, {sort} = {}) {
+  search (queries = {}, {sort, limit} = {}) {
     const { table, columns, aggregate, sort: defaultSort } = this
     const tableExpr = rawsql(table.expr)
     const selectClause = getSelectClause({table, columns, aggregate})
     const whereClause = getWhereClause({table, queries})
     const groupClause = getGroupClause({table, columns, aggregate})
     const orderClause = getOrderClause({table, sort: sort || defaultSort})
-    return sql`SELECT ${selectClause} FROM ${tableExpr} ${whereClause} ${groupClause} ${orderClause}`
+    const limitClause = getLimitClause({limit})
+    return sql`SELECT ${selectClause} FROM ${tableExpr} ${whereClause} ${groupClause} ${orderClause} ${limitClause}`
   }
 
 }
