@@ -80,6 +80,26 @@ export function getOrderClause ({table, sort}) {
   }
 }
 
+export function getLimitClause ({limit}) {
+  const rows = (limit && limit.rows) || limit
+  const offset = limit && limit.offset
+  if (rows != null) {
+    if (!(rows >= 0)) {
+      throw new Error('invalid limit rows')
+    }
+    if (offset != null) {
+      if (!(offset >= 0)) {
+        throw new Error('invalid limit offset')
+      }
+      return rawsql(`LIMIT ${offset},${rows}`)
+    } else {
+      return rawsql(`LIMIT ${rows}`)
+    }
+  } else {
+    return EMPTY_SQL
+  }
+}
+
 export function getInsertClause ({table, values}) {
   const keys = Object.keys(values)
   if (!keys.length) {
