@@ -19,9 +19,11 @@ import {
   USER_ID_KEY,
   USER_NAME_KEY,
   USER_ACTIVE_KEY,
+  USER_FULLNAME_KEY,
   USER_ID_COLUMN,
   USER_NAME_COLUMN,
-  USER_ACTIVE_COLUMN
+  USER_ACTIVE_COLUMN,
+  USER_FULLNAME_SORT_COLUMN
 } from './fixtures/users-columns'
 
 const INVALID_KEY = 'invalid'
@@ -291,6 +293,15 @@ describe('getOrderClause', () => {
       }
     })).to.deep.equal({
       text: `ORDER BY ${USER_ID_COLUMN} DESC`,
+      values: []
+    })
+  })
+  it('should return a clause for a column sorted by another column', () => {
+    expect(getOrderClause({
+      table: USERS_TABLE,
+      sort: USER_FULLNAME_KEY
+    })).to.deep.equal({
+      text: `ORDER BY ${USER_FULLNAME_SORT_COLUMN} ASC`,
       values: []
     })
   })

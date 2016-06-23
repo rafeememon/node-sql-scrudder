@@ -7,6 +7,7 @@ export default class Column {
     this.expr = getOption(options, 'expr')
     this.id = getOption(options, 'id', false)
     this.constraint = getOption(options, 'constraint', {})
+    this.order = getOption(options, 'order', this.expr)
   }
 
 }
