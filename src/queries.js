@@ -74,7 +74,8 @@ export function getOrderClause ({table, sort}) {
   const key = (sort && sort.column) || sort
   const dir = sort && sort.desc ? 'DESC' : 'ASC'
   if (key) {
-    return rawsql(`ORDER BY ${table.getColumn(key).expr} ${dir}`)
+    const { order } = table.getColumn(key)
+    return rawsql(`ORDER BY ${order} ${dir}`)
   } else {
     return EMPTY_SQL
   }
